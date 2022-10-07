@@ -1,6 +1,6 @@
 import React from 'react';
-import logo from './logo.svg';
 import './App.css';
+import logo from './logo.svg';
 
 function App() {
   return (
@@ -22,3 +22,5 @@ function App() {
 }
 
 export default App;
+
+// iniciando projeto;
