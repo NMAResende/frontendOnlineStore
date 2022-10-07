@@ -5,7 +5,7 @@ export async function getCategories() {
   return response;
 }
 
-getCategories().then((response) => console.log(response));
+getCategories();
 
 export async function getProductsFromCategoryAndQuery(QUERY) {
   const url = `https://api.mercadolibre.com/sites/MLB/search?q=${QUERY}`;
@@ -14,8 +14,7 @@ export async function getProductsFromCategoryAndQuery(QUERY) {
   return response;
 }
 
-getProductsFromCategoryAndQuery()
-  .then((response) => console.log(response));
+getProductsFromCategoryAndQuery();
 
 export async function getProductById() {
   // Esta implementação específica não é avaliada, mas pode ajudar você 🙂
