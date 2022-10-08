@@ -16,11 +16,10 @@ class Home extends React.Component {
   }
 
   listCategories = async () => {
-    const { name } = this.state;
     const categories = await getCategories();
-    console.log(Object.values(categories));
+    console.log(categories);
     this.setState({
-      [name]: categories,
+      name: categories, /* tiramos desestruturação do objeto name e colchetes do name */
     });
   };
 
@@ -40,11 +39,10 @@ class Home extends React.Component {
             Carrinho de Compras
           </button>
         </Link>
-
         { name
-          .map((listCateg, i) => (
+          .map((listCateg) => (/* tiramos o index e colocamos o listCateg.id na key */
             <button
-              key={ i }
+              key={ listCateg.id }
               type="button"
               data-testid="category"
             >
