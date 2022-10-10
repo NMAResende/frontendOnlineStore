@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { getProductsFromCategoryAndQuery } from '../services/api';
 
 class Search extends React.Component {
@@ -55,6 +56,12 @@ class Search extends React.Component {
               <p>{ prod.title }</p>
               <img src={ prod.thumbnail } alt={ prod.title } />
               <p>{ prod.price }</p>
+              <Link
+                data-testid="product-detail-link"
+                to={ `/Details/${prod.id}` }
+              >
+                Especificações
+              </Link>
             </div>
           ))}
       </div>
