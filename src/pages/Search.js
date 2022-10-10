@@ -6,8 +6,8 @@ class Search extends React.Component {
     super();
 
     this.state = {
-      name: [],
-      listProducts: '',
+      name: '',
+      listProducts: [],
     };
   }
 
@@ -15,48 +15,48 @@ class Search extends React.Component {
     this.handleButton();
   }
 
-  handleChange = (e) => {
-    const { value } = e.target;
+  handleChange = ({ target }) => {
     this.setState({
-      name: value,
+      name: target.value,
     });
   };
 
   handleButton = async () => {
-    const { listProducts } = this.state;
-    const product = await getProductsFromCategoryAndQuery('', listProducts);
+    const { name } = this.state;
+    const product = await getProductsFromCategoryAndQuery('', name);
     // console.log(product);
-    this.setState({ name: product.results });
+    const { results } = product;
+    this.setState({ listProducts: results });
   };
 
   render() {
-    const { name } = this.state;
+    const { name, listProducts } = this.state;
     return (
       <div>
         <input
           type="text"
           data-testid="query-input"
           onChange={ this.handleChange }
+          value={ name }
         />
         <button
-          data-testid="query-button"
           type="button"
+          data-testid="query-button"
           onClick={ this.handleButton }
         >
           Pesquisa
         </button>
-        <div data-testid="product">
-          {name.length === 0 ? <h2>Nenhum produto foi encontrado</h2>
-            : name.map((prod) => (
-              <div
-                key={ prod.id }
-              >
-                <p>{ prod.title }</p>
-                <img src={ prod.thumbnail } alt={ prod.title } />
-                <p>{ prod.price }</p>
-              </div>
-            ))}
-        </div>
+        {listProducts.length === 0 ? <h2>Nenhum produto foi encontrado</h2>
+          : listProducts.map((prod) => (
+            <div
+              key={ prod.id }
+              data-testid="product"
+            >
+              <p>{ prod.title }</p>
+              <img src={ prod.thumbnail } alt={ prod.title } />
+              <p>{ prod.price }</p>
+            </div>
+          ))}
       </div>
     );
   }
