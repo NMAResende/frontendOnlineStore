@@ -11,7 +11,7 @@ function App() {
       <Switch>
         <Route exact path="/" component={ Home } />
         <Route path="/cart" component={ Cart } />
-        <Route path="/details" component={ Details } />
+        <Route path="/details/:id" component={ Details } />
       </Switch>
     </BrowserRouter>
   );

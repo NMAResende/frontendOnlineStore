@@ -1,58 +1,58 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import { getProductsFromCategoryAndQuery } from '../services/api';
+import { getProductById } from '../services/api';
 
 class Details extends React.Component {
   constructor() {
     super();
 
     this.state = {
-      listProducts: [],
+      details: {},
     };
   }
 
-  //   componentDidMount() {
-  //     this.getQueryId();
-  //   }
-
-  getQueryId = async () => {
+  async componentDidMount() {
     const { match: { params: { id } } } = this.props;
-    const productId = await getProductsFromCategoryAndQuery(id);
-    this.setState({
-      listProducts: productId,
-    });
+    const response = await getProductById(id);
+    this.setState({ details: response });
+  }
+
+  handleButton = async () => {
+    const { history } = this.props;
+    history.push('/cart');
   };
 
+  //   getQueryId = async () => {
+  //     const { match: { params: { id } } } = this.props;
+  //     const productId = await getProductById(id);
+  //     console.log(productId);
+  //     this.setState({
+  //       details: productId,
+  //     });
+  //   };
+
   render() {
-    const { listProducts } = this.state;
-    return (
-      <div>
-        {listProducts.map((prod) => (
-          <div
-            key={ prod.id }
-            data-testid="product"
-          >
-            <p data-testid="product-detail-name">{ prod.title }</p>
-            <img
-              data-testid="product-detail-image"
-              src={ prod.thumbnail }
-              alt={ prod.title }
-            />
-            <p data-testid="product-detail-price">{ prod.price }</p>
-          </div>
-        ))}
-        <Link to="/cart">
+    const { details } = this.state;
+    if (details) {
+      return (
+        <div>
+          <p data-testid="product-detail-name">{ details.title }</p>
+          <img
+            data-testid="product-detail-image"
+            src={ details.thumbnail }
+            alt={ details.title }
+          />
+          <p data-testid="product-detail-price">{ details.price }</p>
           <button
             type="button"
             data-testid="shopping-cart-button"
-            onClick={ this.getQueryId }
+            onClick={ this.handleButton }
           >
             Carrinho de Compras
           </button>
-        </Link>
-      </div>
-    );
+        </div>
+      );
+    }
   }
 }
 
@@ -63,5 +63,8 @@ Details.propTypes = {
     params: PropTypes.shape({
       id: PropTypes.string.isRequired,
     }),
+  }).isRequired,
+  history: PropTypes.shape({
+    push: PropTypes.func,
   }).isRequired,
 };
