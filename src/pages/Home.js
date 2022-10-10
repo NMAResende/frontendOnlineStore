@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { getCategories } from '../services/api';
+import Search from './Search';
 
 class Home extends React.Component {
   constructor() {
@@ -17,7 +18,7 @@ class Home extends React.Component {
 
   listCategories = async () => {
     const categories = await getCategories();
-    console.log(categories);
+    // console.log(categories);
     this.setState({
       name: categories, /* tiramos desestruturação do objeto name e colchetes do name */
     });
@@ -28,6 +29,9 @@ class Home extends React.Component {
     return (
       <div>
         Home
+        <br />
+        <Search />
+        <br />
         <p data-testid="home-initial-message">
           Digite algum termo de pesquisa ou escolha uma categoria.
         </p>
@@ -38,6 +42,7 @@ class Home extends React.Component {
           >
             Carrinho de Compras
           </button>
+          <br />
         </Link>
         { name
           .map((listCateg) => (/* tiramos o index e colocamos o listCateg.id na key */
