@@ -4,8 +4,7 @@ class Cart extends React.Component {
   constructor() {
     super();
     this.state = {
-      cart: '',
-
+      car: [],
     };
   }
 
@@ -13,20 +12,39 @@ class Cart extends React.Component {
     this.getSavedCartItems();
   }
 
-  getSavedCartItems = () => JSON.parse(localStorage.getItem('cartItems'));
+  getSavedCartItems = () => {
+    const get = JSON.parse(localStorage.getItem('cartItems'));
+    if (get !== null) {
+      this.setState({
+        car: JSON.parse(localStorage.getItem('cartItems')),
+      });
+    }
+  };
 
   render() {
-    const { cart } = this.state;
+    const { car } = this.state;
     return (
       <div>
-        if (cart === 0) :
-        <p data-testid="shopping-cart-empty-message">Seu carrinho está vazio</p>
-
-        <p data-testid="shopping-cart-product-name">{ details.title }</p>
-        <p>{ details.price }</p>
-        <p data-testid="shopping-cart-product-quantity">{details.quantify}</p>
+        {car.length === 0 ? (
+          <p
+            data-testid="shopping-cart-empty-message"
+          >
+            Seu carrinho está vazio
+          </p>
+        ) : (
+          <div>
+            { car.length > 0 && car.map((element, i) => (
+              <div
+                key={ i }
+              >
+                <p data-testid="shopping-cart-product-name">{element.title}</p>
+                <p>{element.price}</p>
+                <p data-testid="shopping-cart-product-quantity">1</p>
+              </div>
+            ))}
+          </div>
+        )}
       </div>
-
     );
   }
 }
