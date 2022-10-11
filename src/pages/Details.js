@@ -22,15 +22,6 @@ class Details extends React.Component {
     history.push('/cart');
   };
 
-  //   getQueryId = async () => {
-  //     const { match: { params: { id } } } = this.props;
-  //     const productId = await getProductById(id);
-  //     console.log(productId);
-  //     this.setState({
-  //       details: productId,
-  //     });
-  //   };
-
   render() {
     const { details } = this.state;
     if (details) {
