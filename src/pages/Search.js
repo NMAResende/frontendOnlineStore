@@ -30,6 +30,10 @@ class Search extends React.Component {
     this.setState({ listProducts: results });
   };
 
+  getSavedCartItems = () => localStorage.getItem('cartItems');
+
+  saveCartItems = (valor) => localStorage.setItem('cartItems', (valor));
+
   render() {
     const { name, listProducts } = this.state;
     return (
@@ -62,6 +66,13 @@ class Search extends React.Component {
               >
                 Especificações
               </Link>
+              <button
+                type="button"
+                data-testid="product-add-to-cart"
+                onClick={ this.saveCartItems }
+              >
+                Adicionar ao Carrinho
+              </button>
             </div>
           ))}
       </div>
