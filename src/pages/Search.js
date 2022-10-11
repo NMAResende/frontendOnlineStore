@@ -9,6 +9,7 @@ class Search extends React.Component {
     this.state = {
       name: '',
       listProducts: [],
+      car: [],
     };
   }
 
@@ -25,9 +26,39 @@ class Search extends React.Component {
   handleButton = async () => {
     const { name } = this.state;
     const product = await getProductsFromCategoryAndQuery('', name);
-    // console.log(product);
+    /* console.log(product); */
     const { results } = product;
     this.setState({ listProducts: results });
+  };
+
+  // getClick = ({ target }) => {
+  //   const { title, price } = this.state;
+  //   this.setState({
+  //     [title]: (target.name),
+  //     [price]: (target.value),
+  //   }, this.saveCartItems);
+  // };
+
+  // checkLocalStorage = (param) => {
+  //   if (this.getSavedCartItems() === null) {
+  //     this.saveCartItems('[]');
+  //   }
+  //   if (this.getSavedCartItems() !== null) {
+  //     const loadData = [...JSON.parse(this.getSavedCartItems())];
+  //     // loadData.push(param);
+  //     this.saveCartItems(JSON.stringify(loadData));
+  //   }
+  // };
+
+  saveCartItems = () => {
+    const { car } = this.state;
+    localStorage.setItem('cartItems', JSON.stringify(car));
+  };
+
+  addCar = (i) => {
+    this.setState((prev) => ({
+      car: [...prev.car, i],
+    }), this.saveCartItems);
   };
 
   render() {
@@ -53,15 +84,22 @@ class Search extends React.Component {
               key={ prod.id }
               data-testid="product"
             >
-              <p>{ prod.title }</p>
+              <p>{prod.title}</p>
               <img src={ prod.thumbnail } alt={ prod.title } />
-              <p>{ prod.price }</p>
+              <p>{prod.price}</p>
               <Link
                 data-testid="product-detail-link"
                 to={ `/Details/${prod.id}` }
               >
                 Especificações
               </Link>
+              <button
+                type="button"
+                data-testid="product-add-to-cart"
+                onClick={ () => this.addCar(prod) }
+              >
+                Adicionar ao Carrinho
+              </button>
             </div>
           ))}
       </div>
