@@ -9,6 +9,7 @@ class Search extends React.Component {
     this.state = {
       name: '',
       listProducts: [],
+
     };
   }
 
@@ -25,14 +26,21 @@ class Search extends React.Component {
   handleButton = async () => {
     const { name } = this.state;
     const product = await getProductsFromCategoryAndQuery('', name);
-    // console.log(product);
+    /* console.log(product); */
     const { results } = product;
     this.setState({ listProducts: results });
   };
 
-  getSavedCartItems = () => localStorage.getItem('cartItems');
+  getClick = ({ target }) => {
+    const objt = {
+      title: (target.name),
+      price: (target.value),
+    };
+    console.log(objt);
+  };
+  /* getClick(); */
 
-  saveCartItems = (valor) => localStorage.setItem('cartItems', (valor));
+  /* saveCartItems = (valor) => localStorage.setItem('cartItems', valor); */
 
   render() {
     const { name, listProducts } = this.state;
@@ -69,7 +77,9 @@ class Search extends React.Component {
               <button
                 type="button"
                 data-testid="product-add-to-cart"
-                onClick={ this.saveCartItems }
+                onClick={ this.getClick }
+                name={ prod.title }
+                value={ prod.price }
               >
                 Adicionar ao Carrinho
               </button>
