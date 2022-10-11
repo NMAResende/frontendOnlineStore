@@ -8,6 +8,7 @@ class Details extends React.Component {
 
     this.state = {
       details: {},
+      car: [],
     };
   }
 
@@ -15,6 +16,7 @@ class Details extends React.Component {
     const { match: { params: { id } } } = this.props;
     const response = await getProductById(id);
     this.setState({ details: response });
+    this.getSavedCartItems();
   }
 
   handleButton = async () => {
@@ -22,8 +24,28 @@ class Details extends React.Component {
     history.push('/cart');
   };
 
+  getSavedCartItems = () => {
+    const get = JSON.parse(localStorage.getItem('cartItems'));
+    if (get !== null) {
+      this.setState({
+        car: JSON.parse(localStorage.getItem('cartItems')),
+      });
+    }
+  };
+
+  saveCartItems = () => {
+    const { car } = this.state;
+    localStorage.setItem('cartItems', JSON.stringify(car));
+  };
+
+  addCar = (i) => {
+    this.setState((prev) => ({
+      car: [...prev.car, i],
+    }), this.saveCartItems);
+  };
+
   render() {
-    const { details } = this.state;
+    const { details, car } = this.state;
     if (details) {
       return (
         <div>
@@ -40,6 +62,13 @@ class Details extends React.Component {
             onClick={ this.handleButton }
           >
             Carrinho de Compras
+          </button>
+          <button
+            data-testid="product-detail-add-to-cart"
+            type="button"
+            onClick={ () => this.addCar(car) }
+          >
+            Adicionar ao Carrinho
           </button>
         </div>
       );
