@@ -1,5 +1,5 @@
-import React from 'react';
 import PropTypes from 'prop-types';
+import React from 'react';
 import { getProductById } from '../services/api';
 
 class Details extends React.Component {
@@ -8,7 +8,7 @@ class Details extends React.Component {
 
     this.state = {
       details: {},
-      car: [],
+      car: '', // tirei de chave e coloquei aspas simples.
     };
   }
 
@@ -45,7 +45,7 @@ class Details extends React.Component {
   };
 
   render() {
-    const { details, car } = this.state;
+    const { details } = this.state;
     if (details) {
       return (
         <div>
@@ -66,7 +66,7 @@ class Details extends React.Component {
           <button
             data-testid="product-detail-add-to-cart"
             type="button"
-            onClick={ () => this.addCar(car) }
+            onClick={ () => this.addCar(details) } // retirada da variável 'car' e adicionada variável 'details' no lugar.
           >
             Adicionar ao Carrinho
           </button>
