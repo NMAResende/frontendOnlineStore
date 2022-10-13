@@ -33,10 +33,10 @@ class Home extends React.Component {
     });
   };
 
-  handleButton = async () => {
-    const { name } = this.state;
-    const product = await getProductsFromCategoryAndQuery('', name);
-    /* console.log(product); */
+  handleButton = async ({ target: { value } }) => {
+    // const { name } = this.state;
+    const product = await getProductsFromCategoryAndQuery(value);
+    // console.log(value);
     const { results } = product;
     this.setState({
       listProducts: results,
