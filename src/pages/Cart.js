@@ -39,11 +39,11 @@ class Cart extends React.Component {
               >
                 <p data-testid="shopping-cart-product-name">{element.title}</p>
                 <p>{element.price}</p>
-                <p data-testid="shopping-cart-product-quantity">1</p>
               </div>
             ))}
           </div>
         )}
+        <p data-testid="shopping-cart-product-quantity">{ car.length }</p>
       </div>
     );
   }
