@@ -5,6 +5,8 @@ class Cart extends React.Component {
     super();
     this.state = {
       car: [],
+      // increase: 1,
+      // decrease: 1,
     };
   }
 
@@ -21,6 +23,18 @@ class Cart extends React.Component {
     }
   };
 
+  // handleIncrease = () => {
+  //   this.setState({
+  //     increase:
+  //   })
+  // };
+
+  // handleDecrease = () => {
+  //   this.setState({
+  //     decrease:
+  //   })
+  // };
+
   render() {
     const { car } = this.state;
     return (
@@ -33,17 +47,31 @@ class Cart extends React.Component {
           </p>
         ) : (
           <div>
-            { car.length > 0 && car.map((element, i) => (
+            {car.length > 0 && car.map((element, i) => (
               <div
                 key={ i }
               >
                 <p data-testid="shopping-cart-product-name">{element.title}</p>
                 <p>{element.price}</p>
+                <button
+                  type="button"
+                  data-testid="product-increase-quantity"
+                  // onClick={ this.handleIncrease }
+                >
+                  +
+                </button>
+                <button
+                  type="button"
+                  data-testid="product-decrease-quantity"
+                  // onClick={ this.handleDecrease }
+                >
+                  -
+                </button>
               </div>
             ))}
           </div>
         )}
-        <p data-testid="shopping-cart-product-quantity">{ car.length }</p>
+        <p data-testid="shopping-cart-product-quantity">{car.length}</p>
       </div>
     );
   }

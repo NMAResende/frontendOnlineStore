@@ -8,7 +8,7 @@ class Details extends React.Component {
 
     this.state = {
       details: {},
-      car: '', // tirei de chave e coloquei aspas simples.
+      car: [], // tirei de chave e coloquei aspas simples.
     };
   }
 
