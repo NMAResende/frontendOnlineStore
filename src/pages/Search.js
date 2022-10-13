@@ -1,3 +1,4 @@
+// import PropTypes from 'prop-types';
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { getProductsFromCategoryAndQuery } from '../services/api';
@@ -28,27 +29,10 @@ class Search extends React.Component {
     const product = await getProductsFromCategoryAndQuery('', name);
     /* console.log(product); */
     const { results } = product;
-    this.setState({ listProducts: results });
+    this.setState({
+      listProducts: results,
+    });
   };
-
-  // getClick = ({ target }) => {
-  //   const { title, price } = this.state;
-  //   this.setState({
-  //     [title]: (target.name),
-  //     [price]: (target.value),
-  //   }, this.saveCartItems);
-  // };
-
-  // checkLocalStorage = (param) => {
-  //   if (this.getSavedCartItems() === null) {
-  //     this.saveCartItems('[]');
-  //   }
-  //   if (this.getSavedCartItems() !== null) {
-  //     const loadData = [...JSON.parse(this.getSavedCartItems())];
-  //     // loadData.push(param);
-  //     this.saveCartItems(JSON.stringify(loadData));
-  //   }
-  // };
 
   saveCartItems = () => {
     const { car } = this.state;
@@ -106,5 +90,9 @@ class Search extends React.Component {
     );
   }
 }
+
+// Cart.propTypes = {
+//   car: PropTypes.shape().isRequired,
+// };
 
 export default Search;

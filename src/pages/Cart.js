@@ -1,3 +1,4 @@
+// import PropTypes from 'prop-types';
 import React from 'react';
 
 class Cart extends React.Component {
@@ -22,18 +23,18 @@ class Cart extends React.Component {
     }
   };
 
-  handleIncrease = (click) => {
-    localStorage.setItem('cartItems', JSON.parse(click));
+  handleIncrease = () => {
+    // localStorage.setItem('cartItems', JSON.parse(click));
     this.setState((prev) => ({
       click: prev.click + 1,
-    }));
+    }), () => localStorage.setItem('cartItems', JSON.parse(click)));
   };
 
-  handleDecrease = (click) => {
-    localStorage.setItem('cartItems', JSON.parse(click));
+  handleDecrease = () => {
+    // localStorage.setItem('cartItems', JSON.parse(click));
     this.setState((prev) => ({
       click: prev.click - 1,
-    }));
+    }), () => localStorage.setItem('cartItems', JSON.parse(click)));
   };
 
   handleRemove = ({ target }) => {
@@ -97,5 +98,9 @@ class Cart extends React.Component {
     );
   }
 }
+
+// Cart.propTypes = {
+//   car: PropTypes.shape().isRequired,
+// };
 
 export default Cart;

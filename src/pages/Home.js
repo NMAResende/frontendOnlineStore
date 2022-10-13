@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { getCategories } from '../services/api';
@@ -26,6 +27,7 @@ class Home extends React.Component {
 
   render() {
     const { name } = this.state;
+    const { handleButton } = this.props;
     return (
       <div>
         Home
@@ -50,6 +52,7 @@ class Home extends React.Component {
               key={ listCateg.id }
               type="button"
               data-testid="category"
+              onClick={ handleButton }
             >
               { listCateg.name }
 
@@ -61,4 +64,7 @@ class Home extends React.Component {
   }
 }
 
+Home.propTypes = {
+  handleButton: PropTypes.func.isRequired,
+};
 export default Home;
