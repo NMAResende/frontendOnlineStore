@@ -5,8 +5,7 @@ class Cart extends React.Component {
     super();
     this.state = {
       car: [],
-      // increase: 1,
-      // decrease: 1,
+      click: 1,
     };
   }
 
@@ -23,20 +22,31 @@ class Cart extends React.Component {
     }
   };
 
-  // handleIncrease = () => {
-  //   this.setState({
-  //     increase:
-  //   })
-  // };
+  handleIncrease = (click) => {
+    localStorage.setItem('cartItems', JSON.parse(click));
+    this.setState((prev) => ({
+      click: prev.click + 1,
+    }));
+  };
 
-  // handleDecrease = () => {
-  //   this.setState({
-  //     decrease:
-  //   })
-  // };
+  handleDecrease = (click) => {
+    localStorage.setItem('cartItems', JSON.parse(click));
+    this.setState((prev) => ({
+      click: prev.click - 1,
+    }));
+  };
+
+  handleRemove = ({ target }) => {
+    const { car } = this.state;
+    const newList = car.filter((item) => item.id !== target.value);
+    localStorage.setItem('cartItems', JSON.stringify(newList));
+    this.setState({
+      car: newList,
+    });
+  };
 
   render() {
-    const { car } = this.state;
+    const { car, click } = this.state;
     return (
       <div>
         {car.length === 0 ? (
@@ -56,22 +66,33 @@ class Cart extends React.Component {
                 <button
                   type="button"
                   data-testid="product-increase-quantity"
-                  // onClick={ this.handleIncrease }
+                  onClick={ this.handleIncrease }
                 >
                   +
                 </button>
+                <p>{ click }</p>
                 <button
                   type="button"
                   data-testid="product-decrease-quantity"
-                  // onClick={ this.handleDecrease }
+                  onClick={ this.handleDecrease }
                 >
                   -
+                </button>
+                <button
+                  type="button"
+                  data-testid="remove-product"
+                  value={ element.id }
+                  onClick={ this.handleRemove }
+                >
+                  Remover
                 </button>
               </div>
             ))}
           </div>
         )}
-        <p data-testid="shopping-cart-product-quantity">{car.length}</p>
+        <p data-testid="shopping-cart-product-quantity">
+          { car.length }
+        </p>
       </div>
     );
   }
