@@ -1,5 +1,5 @@
-import React from 'react';
 import PropTypes from 'prop-types';
+import React from 'react';
 import { getProductById } from '../services/api';
 
 class Details extends React.Component {
@@ -8,6 +8,7 @@ class Details extends React.Component {
 
     this.state = {
       details: {},
+      car: '', // tirei de chave e coloquei aspas simples.
     };
   }
 
@@ -15,11 +16,32 @@ class Details extends React.Component {
     const { match: { params: { id } } } = this.props;
     const response = await getProductById(id);
     this.setState({ details: response });
+    this.getSavedCartItems();
   }
 
   handleButton = async () => {
     const { history } = this.props;
     history.push('/cart');
+  };
+
+  getSavedCartItems = () => {
+    const get = JSON.parse(localStorage.getItem('cartItems'));
+    if (get !== null) {
+      this.setState({
+        car: JSON.parse(localStorage.getItem('cartItems')),
+      });
+    }
+  };
+
+  saveCartItems = () => {
+    const { car } = this.state;
+    localStorage.setItem('cartItems', JSON.stringify(car));
+  };
+
+  addCar = (i) => {
+    this.setState((prev) => ({
+      car: [...prev.car, i],
+    }), this.saveCartItems);
   };
 
   render() {
@@ -40,6 +62,13 @@ class Details extends React.Component {
             onClick={ this.handleButton }
           >
             Carrinho de Compras
+          </button>
+          <button
+            data-testid="product-detail-add-to-cart"
+            type="button"
+            onClick={ () => this.addCar(details) } // retirada da variável 'car' e adicionada variável 'details' no lugar.
+          >
+            Adicionar ao Carrinho
           </button>
         </div>
       );
