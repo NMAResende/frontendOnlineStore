@@ -8,7 +8,7 @@ class Details extends React.Component {
 
     this.state = {
       details: {},
-      car: '', // tirei de chave e coloquei aspas simples.
+      car: [], // tirei de chave e coloquei aspas simples.
     };
   }
 
@@ -39,6 +39,7 @@ class Details extends React.Component {
   };
 
   addCar = (i) => {
+    i.quantidade = 1;
     this.setState((prev) => ({
       car: [...prev.car, i],
     }), this.saveCartItems);

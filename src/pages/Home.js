@@ -1,20 +1,30 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { getCategories } from '../services/api';
-import Search from './Search';
+import { getCategories, getProductsFromCategoryAndQuery } from '../services/api';
+// import Search from './Search';
 
 class Home extends React.Component {
   constructor() {
     super();
 
     this.state = {
+      search: '',
       name: [],
+      listProducts: [],
+      car: [],
+      item: false,
     };
   }
 
   componentDidMount() {
     this.listCategories();
   }
+
+  handleChange = ({ target }) => {
+    this.setState({
+      search: target.value,
+    });
+  };
 
   listCategories = async () => {
     const categories = await getCategories();
@@ -24,17 +34,75 @@ class Home extends React.Component {
     });
   };
 
+  handleButton = async ({ target: { value } }) => {
+    // const { name } = this.state;
+    const product = await getProductsFromCategoryAndQuery(value);
+    // console.log(value);
+    const { results } = product;
+    this.setState({
+      listProducts: results,
+    });
+  };
+
+  buttonSearch = async () => {
+    const { search } = this.state;
+    const product = await getProductsFromCategoryAndQuery('', search);
+    // console.log(product);
+    /* console.log(product); */
+    const { results } = product;
+    this.setState({ listProducts: results });
+  };
+
+  saveCartItems = () => {
+    const { car } = this.state;
+    localStorage.setItem('cartItems', JSON.stringify(car));
+  };
+
+  addCar = (i) => {
+    i.quantidade = 1;
+    this.setState((prev) => ({
+      car: [...prev.car, i],
+    }), this.saveCartItems);
+  };
+
   render() {
-    const { name } = this.state;
+    const { name, listProducts, item, search } = this.state;
     return (
       <div>
         Home
         <br />
-        <Search />
+        {/* <Search /> */}
         <br />
-        <p data-testid="home-initial-message">
-          Digite algum termo de pesquisa ou escolha uma categoria.
-        </p>
+        <div>
+          {name
+            .map((listCateg) => (/* tiramos o index e colocamos o listCateg.id na key */
+              <button
+                key={ listCateg.id }
+                type="button"
+                value={ listCateg.id }
+                name="category"
+                data-testid="category"
+                onClick={ this.handleButton }
+              >
+                {listCateg.name}
+              </button>
+            ))}
+        </div>
+        <div>
+          <input
+            type="text"
+            data-testid="query-input"
+            onChange={ this.handleChange }
+            value={ search }
+          />
+        </div>
+        <button
+          type="button"
+          data-testid="query-button"
+          onClick={ this.buttonSearch }
+        >
+          Pesquisa
+        </button>
         <Link to="/cart">
           <button
             type="button"
@@ -44,18 +112,37 @@ class Home extends React.Component {
           </button>
           <br />
         </Link>
-        { name
-          .map((listCateg) => (/* tiramos o index e colocamos o listCateg.id na key */
-            <button
-              key={ listCateg.id }
-              type="button"
-              data-testid="category"
+        {listProducts.length === 0 && !item
+          ? (
+            <p
+              data-testid="home-initial-message"
             >
-              { listCateg.name }
-
-            </button>
-
+              Digite algum termo de pesquisa ou escolha uma categoria.
+            </p>)
+          : listProducts.map((prod) => (
+            <div
+              key={ prod.id }
+              data-testid="product"
+            >
+              <p>{prod.title}</p>
+              <img src={ prod.thumbnail } alt={ prod.title } />
+              <p>{prod.price}</p>
+              <Link
+                data-testid="product-detail-link"
+                to={ `/Details/${prod.id}` }
+              >
+                Especificações
+              </Link>
+              <button
+                type="button"
+                data-testid="product-add-to-cart"
+                onClick={ () => this.addCar(prod) }
+              >
+                Adicionar ao Carrinho
+              </button>
+            </div>
           ))}
+        {item || <h2>Nenhum produto foi encontrado</h2>}
       </div>
     );
   }

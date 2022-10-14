@@ -1,3 +1,4 @@
+// import PropTypes from 'prop-types';
 import React from 'react';
 
 class Cart extends React.Component {
@@ -21,6 +22,34 @@ class Cart extends React.Component {
     }
   };
 
+  handleIncrease = (i) => {
+    const { car } = this.state;
+    i.quantidade += 1;
+    this.setState(() => ({
+      car,
+    }), () => localStorage.setItem('cartItems', JSON.stringify(car)));
+  };
+
+  handleDecrease = (i) => {
+    const { car } = this.state;
+    if (i.quantidade > 1) {
+      i.quantidade -= 1;
+      const newCar = [...car];
+      this.setState(() => ({
+        car: newCar,
+      }), () => localStorage.setItem('cartItems', JSON.stringify(car)));
+    }
+  };
+
+  handleRemove = ({ target }) => {
+    const { car } = this.state;
+    const newList = car.filter((item) => item.id !== target.value);
+    localStorage.setItem('cartItems', JSON.stringify(newList));
+    this.setState({
+      car: newList,
+    });
+  };
+
   render() {
     const { car } = this.state;
     return (
@@ -33,20 +62,49 @@ class Cart extends React.Component {
           </p>
         ) : (
           <div>
-            { car.length > 0 && car.map((element, i) => (
+            {car.length > 0 && car.map((element, index) => (
               <div
-                key={ i }
+                key={ index }
               >
                 <p data-testid="shopping-cart-product-name">{element.title}</p>
                 <p>{element.price}</p>
+                <button
+                  type="button"
+                  data-testid="product-increase-quantity"
+                  onClick={ () => this.handleIncrease(element) }
+                >
+                  +
+                </button>
+                <p data-testid="shopping-cart-product-quantity">{element.quantidade}</p>
+                <button
+                  type="button"
+                  data-testid="product-decrease-quantity"
+                  onClick={ () => this.handleDecrease(element) }
+                >
+                  -
+                </button>
+                <button
+                  type="button"
+                  data-testid="remove-product"
+                  value={ element.id }
+                  onClick={ this.handleRemove }
+                >
+                  Remover
+                </button>
               </div>
             ))}
           </div>
         )}
-        <p data-testid="shopping-cart-product-quantity">{ car.length }</p>
+        <p>
+          {car.length}
+        </p>
       </div>
     );
   }
 }
+
+// Cart.propTypes = {
+//   car: PropTypes.shape().isRequired,
+// };
 
 export default Cart;

@@ -5,16 +5,31 @@ import Cart from './pages/Cart';
 import Details from './pages/Details';
 import Home from './pages/Home';
 
-function App() {
-  return (
-    <BrowserRouter>
-      <Switch>
-        <Route exact path="/" component={ Home } />
-        <Route path="/cart" component={ Cart } />
-        <Route path="/details/:id" component={ Details } />
-      </Switch>
-    </BrowserRouter>
-  );
+class App extends React.Component {
+  // constructor() {
+  //   super();
+  //   this.state = {
+  //     car: [],
+  //   };
+  // }
+
+  // handleChange = ({ target }) => {
+  //   this.setState({
+  //     name: target.value,
+  //   });
+  // };
+
+  render() {
+    return (
+      <BrowserRouter>
+        <Switch>
+          <Route exact path="/" component={ Home } />
+          <Route path="/cart" component={ Cart } />
+          <Route path="/details/:id" component={ Details } />
+        </Switch>
+      </BrowserRouter>
+    );
+  }
 }
 
 export default App;
