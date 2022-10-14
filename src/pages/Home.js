@@ -12,6 +12,7 @@ class Home extends React.Component {
       name: [],
       listProducts: [],
       car: [],
+      item: false,
     };
   }
 
@@ -21,7 +22,7 @@ class Home extends React.Component {
 
   handleChange = ({ target }) => {
     this.setState({
-      name: target.value,
+      search: target.value,
     });
   };
 
@@ -55,13 +56,28 @@ class Home extends React.Component {
   };
 
   render() {
-    const { name, listProducts, search } = this.state;
+    const { name, listProducts, item, search } = this.state;
     return (
       <div>
         Home
         <br />
         {/* <Search /> */}
         <br />
+        <div>
+          {name
+            .map((listCateg) => (/* tiramos o index e colocamos o listCateg.id na key */
+              <button
+                key={ listCateg.id }
+                type="button"
+                value={ listCateg.id }
+                name="category"
+                data-testid="category"
+                onClick={ this.handleButton }
+              >
+                {listCateg.name}
+              </button>
+            ))}
+        </div>
         <div>
           <input
             type="text"
@@ -70,9 +86,13 @@ class Home extends React.Component {
             value={ search }
           />
         </div>
-        <p data-testid="home-initial-message">
-          Digite algum termo de pesquisa ou escolha uma categoria.
-        </p>
+        <button
+          type="button"
+          data-testid="query-button"
+          onClick={ this.handleButton }
+        >
+          Pesquisa
+        </button>
         <Link to="/cart">
           <button
             type="button"
@@ -82,27 +102,13 @@ class Home extends React.Component {
           </button>
           <br />
         </Link>
-        {name
-          .map((listCateg) => (/* tiramos o index e colocamos o listCateg.id na key */
-            <button
-              key={ listCateg.id }
-              type="button"
-              value={ listCateg.id }
-              name="category"
-              data-testid="category"
-              onClick={ this.handleButton }
+        {listProducts.length === 0 && !item
+          ? (
+            <p
+              data-testid="home-initial-message"
             >
-              {listCateg.name}
-            </button>
-          ))}
-        <button
-          type="button"
-          data-testid="query-button"
-          onClick={ this.handleButton }
-        >
-          Pesquisa
-        </button>
-        {listProducts.length === 0 ? <h2>Nenhum produto foi encontrado</h2>
+              Digite algum termo de pesquisa ou escolha uma categoria.
+            </p>)
           : listProducts.map((prod) => (
             <div
               key={ prod.id }
@@ -126,6 +132,7 @@ class Home extends React.Component {
               </button>
             </div>
           ))}
+        {item || <h2>Nenhum produto foi encontrado</h2>}
       </div>
     );
   }
