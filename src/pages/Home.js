@@ -44,12 +44,22 @@ class Home extends React.Component {
     });
   };
 
+  buttonSearch = async () => {
+    const { search } = this.state;
+    const product = await getProductsFromCategoryAndQuery('', search);
+    // console.log(product);
+    /* console.log(product); */
+    const { results } = product;
+    this.setState({ listProducts: results });
+  };
+
   saveCartItems = () => {
     const { car } = this.state;
     localStorage.setItem('cartItems', JSON.stringify(car));
   };
 
   addCar = (i) => {
+    i.quantidade = 1;
     this.setState((prev) => ({
       car: [...prev.car, i],
     }), this.saveCartItems);
@@ -89,7 +99,7 @@ class Home extends React.Component {
         <button
           type="button"
           data-testid="query-button"
-          onClick={ this.handleButton }
+          onClick={ this.buttonSearch }
         >
           Pesquisa
         </button>

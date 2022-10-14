@@ -6,7 +6,6 @@ class Cart extends React.Component {
     super();
     this.state = {
       car: [],
-      click: 1,
     };
   }
 
@@ -23,18 +22,23 @@ class Cart extends React.Component {
     }
   };
 
-  handleIncrease = () => {
-    // localStorage.setItem('cartItems', JSON.parse(click));
-    this.setState((prev) => ({
-      click: prev.click + 1,
-    }), () => localStorage.setItem('cartItems', JSON.parse(click)));
+  handleIncrease = (i) => {
+    const { car } = this.state;
+    i.quantidade += 1;
+    this.setState(() => ({
+      car,
+    }), () => localStorage.setItem('cartItems', JSON.stringify(car)));
   };
 
-  handleDecrease = () => {
-    // localStorage.setItem('cartItems', JSON.parse(click));
-    this.setState((prev) => ({
-      click: prev.click - 1,
-    }), () => localStorage.setItem('cartItems', JSON.parse(click)));
+  handleDecrease = (i) => {
+    const { car } = this.state;
+    if (i.quantidade > 1) {
+      i.quantidade -= 1;
+      const newCar = [...car];
+      this.setState(() => ({
+        car: newCar,
+      }), () => localStorage.setItem('cartItems', JSON.stringify(car)));
+    }
   };
 
   handleRemove = ({ target }) => {
@@ -47,7 +51,7 @@ class Cart extends React.Component {
   };
 
   render() {
-    const { car, click } = this.state;
+    const { car } = this.state;
     return (
       <div>
         {car.length === 0 ? (
@@ -58,24 +62,24 @@ class Cart extends React.Component {
           </p>
         ) : (
           <div>
-            {car.length > 0 && car.map((element, i) => (
+            {car.length > 0 && car.map((element, index) => (
               <div
-                key={ i }
+                key={ index }
               >
                 <p data-testid="shopping-cart-product-name">{element.title}</p>
                 <p>{element.price}</p>
                 <button
                   type="button"
                   data-testid="product-increase-quantity"
-                  onClick={ this.handleIncrease }
+                  onClick={ () => this.handleIncrease(element) }
                 >
                   +
                 </button>
-                <p>{ click }</p>
+                <p data-testid="shopping-cart-product-quantity">{element.quantidade}</p>
                 <button
                   type="button"
                   data-testid="product-decrease-quantity"
-                  onClick={ this.handleDecrease }
+                  onClick={ () => this.handleDecrease(element) }
                 >
                   -
                 </button>
@@ -91,8 +95,8 @@ class Cart extends React.Component {
             ))}
           </div>
         )}
-        <p data-testid="shopping-cart-product-quantity">
-          { car.length }
+        <p>
+          {car.length}
         </p>
       </div>
     );
