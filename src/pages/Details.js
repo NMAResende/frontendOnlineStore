@@ -39,6 +39,7 @@ class Details extends React.Component {
   };
 
   addCar = (i) => {
+    i.quantidade = 1;
     this.setState((prev) => ({
       car: [...prev.car, i],
     }), this.saveCartItems);
