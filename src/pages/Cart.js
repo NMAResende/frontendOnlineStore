@@ -1,5 +1,5 @@
-// import PropTypes from 'prop-types';
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 class Cart extends React.Component {
   constructor() {
@@ -54,6 +54,15 @@ class Cart extends React.Component {
     const { car } = this.state;
     return (
       <div>
+        <Link to="/checkout">
+          <button
+            type="button"
+            data-testid="checkout-products"
+          >
+            Finalizar Compra
+          </button>
+
+        </Link>
         {car.length === 0 ? (
           <p
             data-testid="shopping-cart-empty-message"
@@ -102,9 +111,5 @@ class Cart extends React.Component {
     );
   }
 }
-
-// Cart.propTypes = {
-//   car: PropTypes.shape().isRequired,
-// };
 
 export default Cart;
