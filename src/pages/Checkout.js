@@ -14,7 +14,7 @@ class Checkout extends React.Component {
       cep: '',
       address: '',
       paymentMethod: '',
-      submit: false,
+      submit: [],
     };
   }
 
@@ -27,7 +27,7 @@ class Checkout extends React.Component {
     const check = type === 'checkbox' ? checked : value;
     this.setState({
       [name]: check,
-    });
+    }, this.validationForm);
   };
 
   validationForm = () => {
@@ -41,7 +41,8 @@ class Checkout extends React.Component {
       address.length > 0,
       paymentMethod.length > 0,
     ];
-    return val;
+    const valEvery = val.every((el) => el === true);
+    return valEvery;
   };
 
   handleButton = async () => {
@@ -52,7 +53,7 @@ class Checkout extends React.Component {
       history.push('/');
     } else {
       this.setState({
-        submit: true,
+        submit: validando,
       });
     }
   };
@@ -60,7 +61,7 @@ class Checkout extends React.Component {
   render() {
     const { car, fullname,
       email, cpf, phone, cep,
-      address, paymentMethod, submit } = this.state;
+      address, submit } = this.state;
     return (
       <div>
         {car.map((produto, index) => (
@@ -146,7 +147,7 @@ class Checkout extends React.Component {
               data-testid="ticket-payment"
               id="payment1"
               name="paymentMethod"
-              value={ paymentMethod }
+              value="Boleto"
               onChange={ this.handleChange }
             />
             Boleto
@@ -158,7 +159,7 @@ class Checkout extends React.Component {
               data-testid="visa-payment"
               id="payment2"
               name="paymentMethod"
-              value={ paymentMethod }
+              value="Visa"
               onChange={ this.handleChange }
             />
             Visa
@@ -170,7 +171,7 @@ class Checkout extends React.Component {
               data-testid="master-payment"
               id="payment3"
               name="paymentMethod"
-              value={ paymentMethod }
+              value="MasterCard"
               onChange={ this.handleChange }
             />
             MasterCard
@@ -182,13 +183,13 @@ class Checkout extends React.Component {
               data-testid="elo-payment"
               id="payment4"
               name="paymentMethod"
-              value={ paymentMethod }
+              value="ELO"
               onChange={ this.handleChange }
             />
             ELO
           </label>
           <br />
-          {submit && <h3 data-testid="error-msg">Campos inválidos</h3>}
+          {!submit && <h3 data-testid="error-msg">Campos inválidos</h3>}
           <button
             type="button"
             data-testid="checkout-btn"
