@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import { getProductById } from '../services/api';
+import Form from './Form';
 
 class Details extends React.Component {
   constructor() {
@@ -46,6 +47,8 @@ class Details extends React.Component {
 
   render() {
     const { details } = this.state;
+    const { match: { params: { id } } } = this.props;
+
     if (details) {
       return (
         <div>
@@ -70,64 +73,9 @@ class Details extends React.Component {
           >
             Adicionar ao Carrinho
           </button>
-          <form>
-            <input type="email" placeholder="Email" data-testid="product-detail-email" />
-            <label htmlFor="1">
-              <input
-                type="radio"
-                name="radio"
-                id="1"
-                value="1"
-                data-testid="1-rating"
-              />
-              1
-            </label>
-            <label htmlFor="2">
-              <input
-                type="radio"
-                name="radio"
-                id="2"
-                value="2"
-                data-testid="2-rating"
-              />
-              2
-            </label>
-            <label htmlFor="3">
-              <input
-                type="radio"
-                name="radio"
-                id="3"
-                value="3"
-                data-testid="3-rating"
-              />
-              3
-            </label>
-            <label htmlFor="4">
-              <input
-                type="radio"
-                name="radio"
-                id="4"
-                value="4"
-                data-testid="4-rating"
-              />
-              4
-            </label>
-            <label htmlFor="5">
-              <input
-                type="radio"
-                name="radio"
-                id="5"
-                value="5"
-                data-testid="5-rating"
-              />
-              5
-            </label>
-            <textarea
-              data-testid="product-detail-evaluation"
-              placeholder="Escreva seu comentário sobre o produto"
-            />
-            <button type="submit" data-testid="submit-review-btn"> Enviar</button>
-          </form>
+          <Form
+            produtoId={ id }
+          />
         </div>
       );
     }
