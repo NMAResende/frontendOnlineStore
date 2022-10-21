@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import { getProductById } from '../services/api';
+import Form from './Form';
 
 class Details extends React.Component {
   constructor() {
@@ -47,6 +48,8 @@ class Details extends React.Component {
 
   render() {
     const { details } = this.state;
+    const { match: { params: { id } } } = this.props;
+
     if (details) {
       return (
         <div>
@@ -71,6 +74,9 @@ class Details extends React.Component {
           >
             Adicionar ao Carrinho
           </button>
+          <Form
+            produtoId={ id }
+          />
         </div>
       );
     }
